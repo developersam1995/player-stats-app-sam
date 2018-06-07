@@ -53,6 +53,14 @@ function Stats(props){
     );
 }
 
+function NavList(props) {
+    // props.elements
+    return (
+        <ul>
+        </ul>
+    )
+}
+
 ReactDOM.render(<App />, document.getElementById('react-root'));
 
 //Declare list component
