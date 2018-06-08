@@ -28,11 +28,11 @@ class App extends React.Component {
 
 function NavTree(props) {
     
-    const currStateValues = Object.values(props.navPosition);
     const {year, team, player} = props.navPosition;
-    let years = Object.keys(navigable);
-    if (year) var teams = Object.keys(navigable[year]);
-    if (team) var players = navigable[year][team];
+    let navigableLists = [];
+    navigableLists.push(Object.keys(navigable));
+    if (year) navigableLists.push(Object.keys(navigable[year]));
+    if (team) navigableLists.push(navigable[year][team]);
     
     function Ul(props) {
 
@@ -41,9 +41,14 @@ function NavTree(props) {
            <ul>{uls}</ul>
         );
     }
-
-    for (let depth = currStateValues.length; i > 0; depth--) {
-        let currStateValue = currStateValues[depth];
+    
+    //TODO create return element
+    //TODO create value
+    for (let depth = navigableLists.length; depth > 0; depth--) {
+        //TODO update value
+        console.log(depth);
+        //TODO update return element before exitin the loop
+      
         // if(currStateValue){
             
         //     let list = 
@@ -59,7 +64,7 @@ function NavTree(props) {
     // });
 
     return (
-        <Ul values={years}/>
+        <Ul values={[1,2]}/>
     );
 }
 
