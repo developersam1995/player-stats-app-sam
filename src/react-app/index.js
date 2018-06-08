@@ -3,6 +3,12 @@ const ReactDOM = require('react-dom');
 
 //App component
 
+const navigable = {
+    2008: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
+    2009: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
+    2010: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] }
+};
+
 class App extends React.Component {
     constructor(props) {
       super(props);
@@ -13,7 +19,7 @@ class App extends React.Component {
     render() {
         return(
           <div id='app'> 
-             {/* <NavTree navPosition={this.state.navPosition} /> */}
+             <NavTree navPosition={this.state.navPosition} />
              <Stats navPosition={this.state.navPosition} />
           </div>
         );
@@ -21,9 +27,21 @@ class App extends React.Component {
 }
 
 function NavTree(props) {
-    return (
-        <li></li>
-    );
+    
+    const currStateValues = Object.values(props.navPosition);
+    let years = Object.keys(navigable);
+    if (currStateValues[0]) var teams = Object.keys(navigable[year]);
+    if (currStateValues[1]) var players = navigable[year][team];
+
+    // let retDOM;
+
+    // currStateValues.forEach(currStateValue => {
+
+    // });
+
+    // return (
+    //     <li>{players}</li>
+    // );
 }
 
 function Stats(props){
