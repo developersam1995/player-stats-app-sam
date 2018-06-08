@@ -7,7 +7,7 @@ class App extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-            navPosition : [2008, 'kkr', null]
+            navPosition : {year: 2008, team: 'KKR', player: 'R Dravid'}
       }
     }
     render() {
@@ -22,14 +22,14 @@ class App extends React.Component {
 
 function NavTree(props) {
     return (
-        <li>{props.navPosition}</li>
+        <li></li>
     );
 }
 
 function Stats(props){
     
-    let tableHeading = props.navPosition.filter(ele => ele).join(' - ');
-    console.log(props.navPosition);
+    let currState = Object.values(props.navPosition);
+    let tableHeading = currState.filter(ele => ele).join(' - ');
 
     let statistics = {economy: 3.5, thisa: 'what'};
     let statNames = Object.keys(statistics);
@@ -53,21 +53,5 @@ function Stats(props){
     );
 }
 
-function NavList(props) {
-    // props.elements
-    return (
-        <ul>
-        </ul>
-    )
-}
-
 ReactDOM.render(<App />, document.getElementById('react-root'));
 
-//Declare list component
-function SimpleComponent(props) {
-    return (
-      <div>
-        {props.value}
-      </div>
-    );
-}
