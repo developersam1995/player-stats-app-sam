@@ -13,7 +13,7 @@ class App extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-            navPosition : {year: null, team: null, player: null}
+            navPosition : {year: 2008, team: 'KKR', player: null}
       }
     }
     render() {
@@ -30,18 +30,20 @@ function NavTree(props) {
     
     const {year, team, player} = props.navPosition;
     const currState = [year, team, player];
-    const navigableIds = ['year','team','player'];
+    const navigableClasses = ['years','teams','players'];
     let navigableValues = [];
     
     navigableValues.push(Object.keys(navigableGlobal));
     if (year) navigableValues.push(Object.keys(navigableGlobal[year]));
     if (team) navigableValues.push(navigableGlobal[year][team]);
-    logr(navigableValues);
     
     function Ul(props) {
-        let uls = props.values.map(value => <li key={value}>{value}</li> );
+        let uls = props.values.map((value) => {
+            let currKey = props.keyRoot.join('_');
+            return <li key={currKey+'_'+value}>{value}</li>;
+        });
         return (
-           <ul id={props.id}>{uls}</ul>
+           <ul className={props.class}>{uls}</ul>
         );
     }
     
@@ -52,7 +54,11 @@ function NavTree(props) {
         if(tree) {
             navigableValue.splice(indexToSplice, 0, tree);
         }
-        tree = <Ul id={navigableIds[depth]} values={navigableValue} />
+        tree = <Ul 
+            class={navigableClasses[depth]} 
+            values={navigableValue} 
+            keyRoot = {currState.filter((ele,idx)=>idx<depth)}
+        />;
     }
 
     return tree;
@@ -87,7 +93,8 @@ function Stats(props){
 
 ReactDOM.render(<App />, document.getElementById('react-root'));
 
-function logr(ele){
-  console.log(ele);
+function logr(a){
+  console.log(a);
+  return a;
 }
 
