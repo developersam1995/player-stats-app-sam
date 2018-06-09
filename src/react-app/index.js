@@ -40,7 +40,9 @@ function NavTree(props) {
     function Ul(props) {
         let uls = props.values.map((value) => {
             let currKey = props.keyRoot.join('_');
-            return <li key={currKey+'_'+value}>{value}</li>;
+            if(currKey) currKey = currKey+'_'+value;
+            else currKey = value;
+            return <li key={currKey}>{value}</li>;
         });
         return (
            <ul className={props.class}>{uls}</ul>
