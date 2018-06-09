@@ -3,7 +3,7 @@ const ReactDOM = require('react-dom');
 
 //App component
 
-const navigable = {
+const navigableGlobal = {
     2008: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
     2009: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
     2010: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] }
@@ -13,7 +13,7 @@ class App extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-            navPosition : {year: 2008, team: 'KKR', player: 'R Dravid'}
+            navPosition : {year: null, team: null, player: null}
       }
     }
     render() {
@@ -29,43 +29,33 @@ class App extends React.Component {
 function NavTree(props) {
     
     const {year, team, player} = props.navPosition;
-    let navigableLists = [];
-    navigableLists.push(Object.keys(navigable));
-    if (year) navigableLists.push(Object.keys(navigable[year]));
-    if (team) navigableLists.push(navigable[year][team]);
+    const currState = [year, team, player];
+    const navigableIds = ['year','team','player'];
+    let navigableValues = [];
+    
+    navigableValues.push(Object.keys(navigableGlobal));
+    if (year) navigableValues.push(Object.keys(navigableGlobal[year]));
+    if (team) navigableValues.push(navigableGlobal[year][team]);
+    logr(navigableValues);
     
     function Ul(props) {
-
         let uls = props.values.map(value => <li key={value}>{value}</li> );
         return (
-           <ul>{uls}</ul>
+           <ul id={props.id}>{uls}</ul>
         );
     }
     
-    //TODO create return element
-    //TODO create value
-    for (let depth = navigableLists.length; depth > 0; depth--) {
-        //TODO update value
-        console.log(depth);
-        //TODO update return element before exitin the loop
-      
-        // if(currStateValue){
-            
-        //     let list = 
-        //    <Ul value={list} />
-        // }
+    let tree = null;
+    for (let depth = navigableValues.length-1; depth >= 0; depth--) {
+        let navigableValue = navigableValues[depth];
+        let indexToSplice = navigableValue.indexOf(String(currState[depth]))+1;
+        if(tree) {
+            navigableValue.splice(indexToSplice, 0, tree);
+        }
+        tree = <Ul id={navigableIds[depth]} values={navigableValue} />
     }
-    
 
-    // let retDOM;
-
-    // currStateValues.forEach(currStateValue => {
-
-    // });
-
-    return (
-        <Ul values={[1,2]}/>
-    );
+    return tree;
 }
 
 function Stats(props){
@@ -96,4 +86,8 @@ function Stats(props){
 }
 
 ReactDOM.render(<App />, document.getElementById('react-root'));
+
+function logr(ele){
+  console.log(ele);
+}
 
