@@ -15,7 +15,7 @@ class App extends React.Component {
       super(props);
       this.navigableGlobal = navigableGlobal;
       this.state = {
-            navPosition : {year: 2008, team: 'KKR', player: 'S Ganguly'}
+            navPosition : {year: 2008, team: 'RCB', player: 'S Ganguly'}
       }
       this.updateHandler = this.updateHandler.bind(this);
     }
