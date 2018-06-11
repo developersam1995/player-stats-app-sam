@@ -1,21 +1,37 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
+class Li extends React.Component {
+  constructor(props) {
+    super(props);
+    this.value = props.value;
+    this.pKey = props.pKey;
+    this.updateHandler=props.updateHandler;
+    this.handleUpdate=this.handleUpdate.bind(this);
+  }
+  handleUpdate() {
+    this.updateHandler(this.pKey);
+  }
+  render() {
+    if(typeof this.value=='string')  return <li onClick={this.handleUpdate}>{this.value}</li>;
+    return <li>{this.value}</li>;
+  }
+}
+
 class Ul extends React.Component {
   constructor(props) {
     super(props);
     this.class = props.class;
     this.values = props.values;
     this.keyRoot = props.keyRoot;
+    this.updateHandler=props.updateHandler;
   }
-
   render() {
     let uls = this.values.map((value) => {
       let currKey = this.keyRoot.join('_');
       if (currKey) currKey = currKey + '_' + value;
       else currKey = value;
-      if(typeof value=='string')  return <li key={currKey} onClick={()=>console.log(this)}>{value}</li>;
-      return <li key={currKey}>{value}</li>;
+      return <Li key={currKey} pKey={currKey} value={value} updateHandler={this.updateHandler}/>;
     });
     return (
       <ul className={this.class}>{uls}</ul>
@@ -30,6 +46,7 @@ class NavTree extends React.Component {
     super(props);
     this.navPosition = props.navPosition;
     this.navigableGlobal = props.navigableGlobal;
+    this.updateHandler = props.updateHandler;
   }
   render() {
     const { year, team, player } = this.navPosition;
@@ -52,9 +69,9 @@ class NavTree extends React.Component {
         class={navigableClasses[depth]}
         values={navigableValue}
         keyRoot={currState.filter((ele, idx) => idx < depth)}
+        updateHandler={this.updateHandler}
       />;
     }
-
     return tree;
   }
 }

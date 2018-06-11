@@ -15,12 +15,21 @@ class App extends React.Component {
       super(props);
       this.navigableGlobal = navigableGlobal;
       this.state = {
-            navPosition : {year: 2008, team: 'KKR', player: null}
+            navPosition : {year: 2008, team: 'KKR', player: 'S Ganguly'}
       }
+      this.updateHandler = this.updateHandler.bind(this);
     }
-    updateHandler(state) {
-        console.log(this);
-      console.log(state, 'called');
+    updateHandler(st) {
+        let stArr = st.split('_');
+        let updatedNavPosition = {year: null, team: null, player: null}
+        updatedNavPosition.year = Number(stArr[0]);
+        if(stArr[1]) updatedNavPosition.team = stArr[1];
+        if(stArr[2]) updatedNavPosition.player = stArr[2];
+          
+        this.setState({
+            navPosition: updatedNavPosition
+        })
+          
     }
     render() {
         return(
