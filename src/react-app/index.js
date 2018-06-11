@@ -1,5 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const NavTree = require('./NavTree.js');
 
 //App component
 
@@ -12,58 +13,24 @@ const navigableGlobal = {
 class App extends React.Component {
     constructor(props) {
       super(props);
+      this.navigableGlobal = navigableGlobal;
       this.state = {
             navPosition : {year: 2008, team: 'KKR', player: null}
       }
     }
+    updateHandler(state) {
+        console.log(this);
+      console.log(state, 'called');
+    }
     render() {
         return(
           <div id='app'> 
-             <NavTree navPosition={this.state.navPosition} />
+             <NavTree navPosition={this.state.navPosition} updateHandler={this.updateHandler}
+             navigableGlobal={this.navigableGlobal}/>
              <Stats navPosition={this.state.navPosition} />
           </div>
         );
     }
-}
-
-function NavTree(props) {
-    
-    const {year, team, player} = props.navPosition;
-    const currState = [year, team, player];
-    const navigableClasses = ['years','teams','players'];
-    let navigableValues = [];
-    
-    navigableValues.push(Object.keys(navigableGlobal));
-    if (year) navigableValues.push(Object.keys(navigableGlobal[year]));
-    if (team) navigableValues.push(navigableGlobal[year][team]);
-    
-    function Ul(props) {
-        let uls = props.values.map((value) => {
-            let currKey = props.keyRoot.join('_');
-            if(currKey) currKey = currKey+'_'+value;
-            else currKey = value;
-            return <li key={currKey}>{value}</li>;
-        });
-        return (
-           <ul className={props.class}>{uls}</ul>
-        );
-    }
-    
-    let tree = null;
-    for (let depth = navigableValues.length-1; depth >= 0; depth--) {
-        let navigableValue = navigableValues[depth];
-        let indexToSplice = navigableValue.indexOf(String(currState[depth]))+1;
-        if(tree) {
-            navigableValue.splice(indexToSplice, 0, tree);
-        }
-        tree = <Ul 
-            class={navigableClasses[depth]} 
-            values={navigableValue} 
-            keyRoot = {currState.filter((ele,idx)=>idx<depth)}
-        />;
-    }
-
-    return tree;
 }
 
 function Stats(props){
