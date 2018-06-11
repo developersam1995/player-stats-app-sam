@@ -1,57 +1,51 @@
 const React = require('react');
-const ReactDOM = require('react-dom');
 
 class Li extends React.Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.value = props.value;
-    this.pKey = props.pKey;
-    this.updateHandler=props.updateHandler;
-    this.handleUpdate=this.handleUpdate.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
   }
   handleUpdate() {
-    this.updateHandler(this.pKey);
+    let statusArr = this.props.pKey.split('_');
+    let updatedNavPosition = { year: null, team: null, player: null }
+    updatedNavPosition.year = Number(statusArr[0]);
+    if (statusArr[1]) updatedNavPosition.team = statusArr[1];
+    if (statusArr[2]) updatedNavPosition.player = statusArr[2];
+    this.props.updateHandler(updatedNavPosition);
   }
   render() {
-    if(typeof this.value=='string')  return <li onClick={this.handleUpdate}>{this.value}</li>;
-    return <li>{this.value}</li>;
+    if (typeof this.props.value == 'string') return <li onClick={this.handleUpdate}>{this.props.value}</li>;
+    return <li>{this.props.value}</li>;
   }
 }
 
 class Ul extends React.Component {
-  constructor(props) {
-    super(props);
-    this.class = props.class;
-    this.values = props.values;
-    this.keyRoot = props.keyRoot;
-    this.updateHandler=props.updateHandler;
-  }
   render() {
-    let uls = this.values.map((value) => {
-      let currKey = this.keyRoot.join('_');
+    let uls = this.props.values.map((value) => {
+      let currKey = this.props.keyRoot.join('_');
       if (currKey) currKey = currKey + '_' + value;
       else currKey = value;
-      return <Li key={currKey} pKey={currKey} value={value} updateHandler={this.updateHandler}/>;
+      return <Li key={currKey} pKey={currKey} value={value} updateHandler={this.props.updateHandler} />;
     });
     return (
-      <ul className={this.class}>{uls}</ul>
+      <ul>{uls}</ul>
     );
   }
 }
 
-
-
 class NavTree extends React.Component {
   constructor(props) {
     super(props);
-    this.navPosition = props.navPosition;
-    this.navigableGlobal = props.navigableGlobal;
-    this.updateHandler = props.updateHandler;
+    this.navigableGlobal = {
+      2008: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
+      2009: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
+      2010: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] }
+  };
   }
   render() {
-    const { year, team, player } = this.navPosition;
+    const { year, team, player } = this.props.navPosition;
     const currState = [year, team, player];
-    const navigableClasses = ['years', 'teams', 'players'];
+    // const navigableClasses = ['years', 'teams', 'players'];
     let navigableValues = [];
 
     navigableValues.push(Object.keys(this.navigableGlobal));
@@ -59,6 +53,7 @@ class NavTree extends React.Component {
     if (team) navigableValues.push(this.navigableGlobal[year][team]);
 
     let tree = null;
+
     for (let depth = navigableValues.length - 1; depth >= 0; depth--) {
       let navigableValue = navigableValues[depth];
       let indexToSplice = navigableValue.indexOf(String(currState[depth])) + 1;
@@ -66,14 +61,14 @@ class NavTree extends React.Component {
         navigableValue.splice(indexToSplice, 0, tree);
       }
       tree = <Ul
-        class={navigableClasses[depth]}
+        // class={navigableClasses[depth]}
         values={navigableValue}
         keyRoot={currState.filter((ele, idx) => idx < depth)}
-        updateHandler={this.updateHandler}
+        updateHandler={this.props.updateHandler}
       />;
     }
     return tree;
   }
 }
 
-module.exports = NavTree;
+module.exports = NavTree; 
