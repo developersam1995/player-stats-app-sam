@@ -24,6 +24,8 @@ class App extends React.Component {
         );
     }
 }
+
+
 function Stats(props){
 
     let currState = Object.values(props.navPosition);

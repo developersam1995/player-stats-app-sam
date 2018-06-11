@@ -28,7 +28,7 @@ class Ul extends React.Component {
       return <Li key={currKey} pKey={currKey} value={value} updateHandler={this.props.updateHandler} />;
     });
     return (
-      <ul>{uls}</ul>
+      <ul className={this.props.class}>{uls}</ul>
     );
   }
 }
@@ -45,7 +45,7 @@ class NavTree extends React.Component {
   render() {
     const { year, team, player } = this.props.navPosition;
     const currState = [year, team, player];
-    // const navigableClasses = ['years', 'teams', 'players'];
+    const navigableClasses = ['years', 'teams', 'players'];
     let navigableValues = [];
 
     navigableValues.push(Object.keys(this.navigableGlobal));
@@ -61,7 +61,7 @@ class NavTree extends React.Component {
         navigableValue.splice(indexToSplice, 0, tree);
       }
       tree = <Ul
-        // class={navigableClasses[depth]}
+        class={navigableClasses[depth]}
         values={navigableValue}
         keyRoot={currState.filter((ele, idx) => idx < depth)}
         updateHandler={this.props.updateHandler}
