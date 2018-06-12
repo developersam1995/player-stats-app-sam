@@ -67,7 +67,7 @@ class NavTree extends React.Component {
         updateHandler={this.props.updateHandler}
       />;
     }
-    return tree;
+    return <div id='nav-tree'>{tree}</div>;
   }
 }
 

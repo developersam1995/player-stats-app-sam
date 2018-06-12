@@ -44,12 +44,14 @@ function Stats(props){
     });
 
     return (
+        <div id="stats">
         <table>
             <tbody>
             <tr><th colSpan={2}>{tableHeading}</th></tr>
             {tableData}
             </tbody>
         </table>
+        </div>
     );
 }
 

@@ -1,0 +1,20 @@
+h1 {
+    text-align: center;
+    margin: 20px 20px;
+}
+
+#react-root {
+    width: 100%;
+}
+
+#app {
+    width: 100%;
+    display: flex;
+}
+
+#stats {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
