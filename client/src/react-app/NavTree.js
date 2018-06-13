@@ -1,7 +1,7 @@
 const React = require('react');
 
 class Li extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.handleUpdate = this.handleUpdate.bind(this);
   }
@@ -14,7 +14,7 @@ class Li extends React.Component {
     this.props.updateHandler(updatedNavPosition);
   }
   render() {
-    if (typeof this.props.value == 'string') return <li onClick={this.handleUpdate}>{this.props.value}</li>;
+    if (typeof this.props.value == 'string') return <li onClick={this.handleUpdate} className='clickable'>{this.props.value}</li>;
     return <li>{this.props.value}</li>;
   }
 }
@@ -37,14 +37,15 @@ class NavTree extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      navigableGlobal : {1:{} }
+      navigableGlobal: { 1: {} }
     };
   }
-  componentDidMount(){
-    fetch('http://localhost:3030/navTree').then((response)=>{
-       return response.json();
-    }).then(json=>{
-      this.setState({navigableGlobal: JSON.parse(json)})});
+  componentDidMount() {
+    fetch('/navTree').then((response) => {
+      return response.json();
+    }).then(json => {
+      this.setState({ navigableGlobal: JSON.parse(json) })
+    });
   }
   render() {
 

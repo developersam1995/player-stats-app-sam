@@ -5,26 +5,31 @@ class Stats extends React.Component {
         super(props);
         this.state = {
             navPosition: { year: null, team: null, player: null },
-            statistics: { economy: 3.5, thisa: 'what' }
+            statistics: { stats: 'Value' }
         }
     }
     fetchData(navPosition) {
         let stringifiedURL = Object.values(navPosition).join('_').replace(/ /g, '-');
-        fetch(`http://localhost:3030/stats/${stringifiedURL}`).then((response) => {
+        fetch(`/stats/${stringifiedURL}`).then((response) => {
             return response.json();
         }).then(json => {
-            this.setState({ 
+            this.setState({
                 navPosition: navPosition,
-                statistics: json })
+                statistics: json
+            })
         });
     }
     render() {
-        if(!(JSON.stringify(this.state.navPosition)==JSON.stringify(this.props.navPosition)))
-        this.fetchData(this.props.navPosition);
+        if (!(JSON.stringify(this.state.navPosition) == JSON.stringify(this.props.navPosition)))
+            this.fetchData(this.props.navPosition);
         let currPosition = Object.values(this.state.navPosition);
         let tableHeading = currPosition.filter(ele => ele).join(' - ');
         let statistics = this.state.statistics;
         let statNames = Object.keys(statistics);
+        let indexOfId = statNames.indexOf('_id');
+        if (indexOfId > -1) {
+            statNames.splice(indexOfId, 1);
+        }
 
         let tableData = statNames.map(statName => {
             return (

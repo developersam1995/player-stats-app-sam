@@ -60,6 +60,7 @@
 	var React = __webpack_require__(/*! react */ 1);
 	var ReactDOM = __webpack_require__(/*! react-dom */ 37);
 	var NavTree = __webpack_require__(/*! ./NavTree.js */ 184);
+	var Stats = __webpack_require__(/*! ./Stats.js */ 185);
 	
 	var App = function (_React$Component) {
 	    _inherits(App, _React$Component);
@@ -70,7 +71,7 @@
 	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	
 	        _this.state = {
-	            navPosition: { year: 2009, team: 'KKR', player: 'S Ganguly' }
+	            navPosition: { year: null, team: null, player: null }
 	        };
 	        _this.updateHandler = _this.updateHandler.bind(_this);
 	        return _this;
@@ -97,61 +98,6 @@
 	
 	    return App;
 	}(React.Component);
-	
-	function Stats(props) {
-	
-	    var currState = Object.values(props.navPosition);
-	    var tableHeading = currState.filter(function (ele) {
-	        return ele;
-	    }).join(' - ');
-	
-	    var statistics = { economy: 3.5, thisa: 'what' };
-	    var statNames = Object.keys(statistics);
-	
-	    var tableData = statNames.map(function (statName) {
-	        return React.createElement(
-	            'tr',
-	            { key: statName },
-	            React.createElement(
-	                'td',
-	                null,
-	                React.createElement(
-	                    'strong',
-	                    null,
-	                    statName
-	                )
-	            ),
-	            React.createElement(
-	                'td',
-	                null,
-	                statistics[statName]
-	            )
-	        );
-	    });
-	
-	    return React.createElement(
-	        'div',
-	        { id: 'stats' },
-	        React.createElement(
-	            'table',
-	            null,
-	            React.createElement(
-	                'tbody',
-	                null,
-	                React.createElement(
-	                    'tr',
-	                    null,
-	                    React.createElement(
-	                        'th',
-	                        { colSpan: 2 },
-	                        tableHeading
-	                    )
-	                ),
-	                tableData
-	            )
-	        )
-	    );
-	}
 	
 	ReactDOM.render(React.createElement(App, null), document.getElementById('react-root'));
 
@@ -22617,7 +22563,7 @@
 	    value: function render() {
 	      if (typeof this.props.value == 'string') return React.createElement(
 	        'li',
-	        { onClick: this.handleUpdate },
+	        { onClick: this.handleUpdate, className: 'clickable' },
 	        this.props.value
 	      );
 	      return React.createElement(
@@ -22669,18 +22615,27 @@
 	
 	    var _this4 = _possibleConstructorReturn(this, (NavTree.__proto__ || Object.getPrototypeOf(NavTree)).call(this, props));
 	
-	    _this4.navigableGlobal = {
-	      2008: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
-	      2009: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
-	      2010: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] }
+	    _this4.state = {
+	      navigableGlobal: { 1: {} }
 	    };
 	    return _this4;
 	  }
 	
 	  _createClass(NavTree, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this5 = this;
+	
+	      fetch('/navTree').then(function (response) {
+	        return response.json();
+	      }).then(function (json) {
+	        _this5.setState({ navigableGlobal: JSON.parse(json) });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this5 = this;
+	      var _this6 = this;
 	
 	      var _props$navPosition = this.props.navPosition,
 	          year = _props$navPosition.year,
@@ -22691,9 +22646,9 @@
 	      var navigableClasses = ['years', 'teams', 'players'];
 	      var navigableValues = [];
 	
-	      navigableValues.push(Object.keys(this.navigableGlobal));
-	      if (year) navigableValues.push(Object.keys(this.navigableGlobal[year]));
-	      if (team) navigableValues.push(this.navigableGlobal[year][team]);
+	      navigableValues.push(Object.keys(this.state.navigableGlobal));
+	      if (year) navigableValues.push(Object.keys(this.state.navigableGlobal[year]));
+	      if (team) navigableValues.push(this.state.navigableGlobal[year][team]);
 	
 	      var tree = null;
 	
@@ -22709,7 +22664,7 @@
 	          keyRoot: currState.filter(function (ele, idx) {
 	            return idx < depth;
 	          }),
-	          updateHandler: _this5.props.updateHandler
+	          updateHandler: _this6.props.updateHandler
 	        });
 	      };
 	
@@ -22728,6 +22683,121 @@
 	}(React.Component);
 	
 	module.exports = NavTree;
+
+/***/ }),
+/* 185 */
+/*!********************************!*\
+  !*** ./src/react-app/Stats.js ***!
+  \********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(/*! react */ 1);
+	
+	var Stats = function (_React$Component) {
+	    _inherits(Stats, _React$Component);
+	
+	    function Stats(props) {
+	        _classCallCheck(this, Stats);
+	
+	        var _this = _possibleConstructorReturn(this, (Stats.__proto__ || Object.getPrototypeOf(Stats)).call(this, props));
+	
+	        _this.state = {
+	            navPosition: { year: null, team: null, player: null },
+	            statistics: { stats: 'Value' }
+	        };
+	        return _this;
+	    }
+	
+	    _createClass(Stats, [{
+	        key: 'fetchData',
+	        value: function fetchData(navPosition) {
+	            var _this2 = this;
+	
+	            var stringifiedURL = Object.values(navPosition).join('_').replace(/ /g, '-');
+	            fetch('/stats/' + stringifiedURL).then(function (response) {
+	                return response.json();
+	            }).then(function (json) {
+	                _this2.setState({
+	                    navPosition: navPosition,
+	                    statistics: json
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            if (!(JSON.stringify(this.state.navPosition) == JSON.stringify(this.props.navPosition))) this.fetchData(this.props.navPosition);
+	            var currPosition = Object.values(this.state.navPosition);
+	            var tableHeading = currPosition.filter(function (ele) {
+	                return ele;
+	            }).join(' - ');
+	            var statistics = this.state.statistics;
+	            var statNames = Object.keys(statistics);
+	            var indexOfId = statNames.indexOf('_id');
+	            if (indexOfId > -1) {
+	                statNames.splice(indexOfId, 1);
+	            }
+	
+	            var tableData = statNames.map(function (statName) {
+	                return React.createElement(
+	                    'tr',
+	                    { key: statName },
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        React.createElement(
+	                            'strong',
+	                            null,
+	                            statName
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'td',
+	                        null,
+	                        statistics[statName]
+	                    )
+	                );
+	            });
+	
+	            return React.createElement(
+	                'div',
+	                { id: 'stats' },
+	                React.createElement(
+	                    'table',
+	                    null,
+	                    React.createElement(
+	                        'tbody',
+	                        null,
+	                        React.createElement(
+	                            'tr',
+	                            null,
+	                            React.createElement(
+	                                'th',
+	                                { colSpan: 2 },
+	                                tableHeading
+	                            )
+	                        ),
+	                        tableData
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return Stats;
+	}(React.Component);
+	
+	module.exports = Stats;
 
 /***/ })
 /******/ ]);

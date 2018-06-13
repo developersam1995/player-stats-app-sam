@@ -4,6 +4,7 @@ const app = express();
 const fs = require('fs');
 
 app.use(express.static('./'));
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, X-Custom-Header, Accept");
@@ -17,7 +18,6 @@ app.get('/', (req, res) => {
 
 app.get('/navTree', (req, res) => {
     fs.readFile('./appData/navTree.json', 'utf8', (err, data) => {
-        console.log('request');
         if (err) res.sendStatus(404);
         res.json(data);
     });
