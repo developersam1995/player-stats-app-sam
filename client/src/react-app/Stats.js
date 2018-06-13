@@ -1,6 +1,7 @@
 const React = require('react');
 
 class Stats extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -8,6 +9,7 @@ class Stats extends React.Component {
             statistics: { stats: 'Value' }
         }
     }
+
     fetchData(navPosition) {
         let stringifiedURL = Object.values(navPosition).join('_').replace(/ /g, '-');
         fetch(`/stats/${stringifiedURL}`).then((response) => {
@@ -19,6 +21,7 @@ class Stats extends React.Component {
             })
         });
     }
+    
     render() {
         if (!(JSON.stringify(this.state.navPosition) == JSON.stringify(this.props.navPosition)))
             this.fetchData(this.props.navPosition);

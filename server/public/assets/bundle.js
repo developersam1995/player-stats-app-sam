@@ -90,7 +90,8 @@
 	            return React.createElement(
 	                'div',
 	                { id: 'app' },
-	                React.createElement(NavTree, { navPosition: this.state.navPosition, updateHandler: this.updateHandler }),
+	                React.createElement(NavTree, { navPosition: this.state.navPosition,
+	                    updateHandler: this.updateHandler }),
 	                React.createElement(Stats, { navPosition: this.state.navPosition })
 	            );
 	        }
@@ -22561,11 +22562,20 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (typeof this.props.value == 'string') return React.createElement(
-	        'li',
-	        { onClick: this.handleUpdate, className: 'clickable' },
-	        this.props.value
-	      );
+	      if (typeof this.props.value == 'string') {
+	        if (this.props.value == this.props.clickedValue) return React.createElement(
+	          'li',
+	          { onClick: this.handleUpdate,
+	            className: 'clickable clicked' },
+	          this.props.value
+	        );
+	        return React.createElement(
+	          'li',
+	          { onClick: this.handleUpdate,
+	            className: 'clickable' },
+	          this.props.value
+	        );
+	      }
 	      return React.createElement(
 	        'li',
 	        null,
@@ -22594,7 +22604,9 @@
 	      var uls = this.props.values.map(function (value) {
 	        var currKey = _this3.props.keyRoot.join('_');
 	        if (currKey) currKey = currKey + '_' + value;else currKey = value;
-	        return React.createElement(Li, { key: currKey, pKey: currKey, value: value, updateHandler: _this3.props.updateHandler });
+	        return React.createElement(Li, { key: currKey, pKey: currKey, value: value,
+	          updateHandler: _this3.props.updateHandler,
+	          clickedValue: _this3.props.clickedValue });
 	      });
 	      return React.createElement(
 	        'ul',
@@ -22659,6 +22671,7 @@
 	          navigableValue.splice(indexToSplice, 0, tree);
 	        }
 	        tree = React.createElement(Ul, {
+	          clickedValue: navigableValue[indexToSplice - 1],
 	          'class': navigableClasses[depth],
 	          values: navigableValue,
 	          keyRoot: currState.filter(function (ele, idx) {

@@ -32,9 +32,13 @@ ul {
     border: 1px solid #ddd;
 }
 
-li.clickable {
+li.clickable{
     margin: 8px;
     font-weight: bold;
+}
+
+li.clicked::before {
+    content: '>>';
 }
 
 li.clickable:hover {
