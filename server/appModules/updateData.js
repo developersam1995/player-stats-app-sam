@@ -64,7 +64,6 @@ function updateNavTree() {
       if(!seasonsRemaining && !bowlerEachTeamRemaining) createJsonFile(navTree,'navTree');
     });
   }
-
 }
 
 // updateNavTree();

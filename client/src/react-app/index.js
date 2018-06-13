@@ -6,7 +6,7 @@ class App extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-            navPosition : {year: 2009, team: 'KKR', player: 'S Ganguly'}
+            navPosition : {year: null, team: null, player: null}
       }
       this.updateHandler = this.updateHandler.bind(this);
     }
