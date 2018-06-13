@@ -9,14 +9,6 @@ const startSeason = 2008;
 const endSeason = (new Date()).getFullYear();
 const matchIds = {};
 
-function createJsonFile(jsonObject, fileName) {
-  let stringified = JSON.stringify(jsonObject);
-  fs.writeFile(`./${fileName}.json`, stringified, (err) => {
-    if (err) console.log(err);
-    else console.log(`Created JSON file ${fileName}.json in appData`);
-  });
-};
-
 mongoose.connect('mongodb://localhost/ipl');
 
 let db = mongoose.connection;
@@ -24,15 +16,18 @@ let db = mongoose.connection;
 db.once('open', () => {
   console.log('Mongo active')
   updateMatchIds();
-  setTimeout(updateNavTree,5000);
 });
 
 function updateMatchIds(){
+  let seasonsRemaining = endSeason-startSeason;
   for(let season = startSeason; season<endSeason; season++){
     let ids = calculator.getMatchIds(ModelMatch,season);
     ids.catch(errLogger);
     ids.then((ids)=>{
       matchIds[season]=ids;
+      seasonsRemaining--;      
+      if(!seasonsRemaining) {
+        updateNavTree()};
     });
   };
 }
@@ -66,8 +61,25 @@ function updateNavTree() {
   }
 }
 
-// updateNavTree();
+function statsCalc(season,team,player,callback) {
+  return new Promise((resolve,reject)=>{
+    let res = calculator.stats(ModelDeliveries,matchIds[season],team,player);
+    res.then(callback);
+    res.catch(errLogger);
+  });
+}
 
-function errLogger(err){
+function createJsonFile(jsonObject, fileName) {
+  let stringified = JSON.stringify(jsonObject);
+  fs.writeFile(`./appData/${fileName}.json`, stringified, (err) => {
+    if (err) console.log(err);
+    else console.log(`Created JSON file ${fileName}.json in appData`);
+  });
+}
+
+function errLogger(err) {
   console.log(err);
 }
+
+
+module.exports.statsCalc = statsCalc;

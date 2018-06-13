@@ -9,17 +9,6 @@ function getMatchIds(ModelMatch, season) {
   });
 }
 
-// function getTeamsPlayedEachYear(ModelMatch) {
-//   return new Promise((resolve, reject) => {
-//     ModelMatch.aggregate([{
-//       $group: { _id: '$season', teams: { $addToSet: '$team1' }},
-//     }], (err, data) => {
-//       if (err) reject(err);
-//       resolve(data);
-//     });
-//   });
-// }
-
 function getBowlersEachTeam(ModelDeliveries, matchIds, season) {
   return new Promise((resolve, reject) => {
     ModelDeliveries.aggregate([
@@ -73,6 +62,5 @@ function stats(ModelDeliveries, matchIds, team, player) {
 
 
 module.exports.getMatchIds = getMatchIds;
-// module.exports.getTeamsPlayedEachYear = getTeamsPlayedEachYear;
 module.exports.getBowlersEachTeam = getBowlersEachTeam;
 module.exports.stats = stats;
