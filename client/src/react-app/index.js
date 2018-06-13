@@ -1,6 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const NavTree = require('./NavTree.js');
+const Stats = require('./Stats.js');
 
 class App extends React.Component {
     constructor(props) {
@@ -25,34 +26,5 @@ class App extends React.Component {
     }
 }
 
-
-function Stats(props){
-
-    let currState = Object.values(props.navPosition);
-    let tableHeading = currState.filter(ele => ele).join(' - ');
-
-    let statistics = {economy: 3.5, thisa: 'what'};
-    let statNames = Object.keys(statistics);
-
-    let tableData = statNames.map(statName => {        
-        return (
-            <tr key={statName}>
-                <td><strong>{statName}</strong></td>
-                <td>{statistics[statName]}</td>
-            </tr>
-        );
-    });
-
-    return (
-        <div id="stats">
-        <table>
-            <tbody>
-            <tr><th colSpan={2}>{tableHeading}</th></tr>
-            {tableData}
-            </tbody>
-        </table>
-        </div>
-    );
-}
 
 ReactDOM.render(<App />, document.getElementById('react-root'));

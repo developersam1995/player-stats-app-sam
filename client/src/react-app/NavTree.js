@@ -36,21 +36,26 @@ class Ul extends React.Component {
 class NavTree extends React.Component {
   constructor(props) {
     super(props);
-    this.navigableGlobal = {
-      2008: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
-      2009: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] },
-      2010: { KKR: ['B Mculum', 'S Ganguly'], RCB: ['R Dravid', 'W Jaffer'] }
-  };
+    this.state = {
+      navigableGlobal : {1:{} }
+    };
+  }
+  componentDidMount(){
+    fetch('http://localhost:3030/navTree').then((response)=>{
+       return response.json();
+    }).then(json=>{
+      this.setState({navigableGlobal: JSON.parse(json)})});
   }
   render() {
+
     const { year, team, player } = this.props.navPosition;
     const currState = [year, team, player];
     const navigableClasses = ['years', 'teams', 'players'];
     let navigableValues = [];
 
-    navigableValues.push(Object.keys(this.navigableGlobal));
-    if (year) navigableValues.push(Object.keys(this.navigableGlobal[year]));
-    if (team) navigableValues.push(this.navigableGlobal[year][team]);
+    navigableValues.push(Object.keys(this.state.navigableGlobal));
+    if (year) navigableValues.push(Object.keys(this.state.navigableGlobal[year]));
+    if (team) navigableValues.push(this.state.navigableGlobal[year][team]);
 
     let tree = null;
 
